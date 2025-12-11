@@ -1,168 +1,44 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+Library Book Management System 
+A simple system to manage books by adding,
+searching, displaying, and deleting records.
 
-struct Book {
-    int id;
-    char title[100];
-    char author[100];
-    float price;
-};
+project deatiles 
+TEAM MEMBERS 
 
-void addBook() {
-    struct Book b;
-    FILE *fp = fopen("library.dat", "ab");
+Rahmanth- AP25110010173
+Pragnyan-AP25110010403
+Charan Kousik-AP25110010405
+Deekshithasree-AP25110010572
+Bhavitha-AP25110010136 
 
-    printf("\nEnter Book ID: ");
-    scanf("%d", &b.id);
-    printf("Enter Book Title: ");
-    getchar();
-    fgets(b.title, 100, stdin);
-    b.title[strcspn(b.title, "\n")] = 0;
+Purpose and Objective
+• - Efficiently store and manage book details.
+• - Allow users to add, search, view, and delete books.
+• - Understand file handling and data structures.
+• -it allows easy handling of book information such as
+adding, viewing, searching, and updating records.
 
-    printf("Enter Book Author: ");
-    fgets(b.author, 100, stdin);
-    b.author[strcspn(b.author, "\n")] = 0;
 
-    printf("Enter Book Price: ");
-    scanf("%f", &b.price);
+How to Compile and Run
+•Open terminal or command prompt.
+•Go to the folder where your C file is saved.
+•Compile the program using:gcc library.c -o library
+•Run the program
+•Linux: ./library
+•Use the menu to perform library operations.
 
-    fwrite(&b, sizeof(b), 1, fp);
-    fclose(fp);
-    printf("\nBook Added Successfully!\n");
-}
+Sample Output
+• 1. Add Book
+• 2. Search Book
+• 3. Display All Books
+• 4. Exit
+• Enter your choice: 4
+• Exiting program. Thank you!  
 
-void displayBooks() {
-    struct Book b;
-    FILE *fp = fopen("library.dat", "rb");
 
-    if (!fp) {
-        printf("\nNo records found.\n");
-        return;
-    }
 
-    printf("\n--- Book List ---\n");
-    while (fread(&b, sizeof(b), 1, fp)) {
-        printf("\nID: %d\nTitle: %s\nAuthor: %s\nPrice: %.2f\n", 
-               b.id, b.title, b.author, b.price);
-    }
-    fclose(fp);
-}
-
-void searchBook() {
-    int id, found = 0;
-    struct Book b;
-    FILE *fp = fopen("library.dat", "rb");
-
-    printf("\nEnter Book ID to Search: ");
-    scanf("%d", &id);
-
-    while (fread(&b, sizeof(b), 1, fp)) {
-        if (b.id == id) {
-            printf("\nBook Found:\nID: %d\nTitle: %s\nAuthor: %s\nPrice: %.2f\n",
-                   b.id, b.title, b.author, b.price);
-            found = 1;
-            break;
-        }
-    }
-
-    if (!found)
-        printf("\nBook Not Found!\n");
-
-    fclose(fp);
-}
-
-void deleteBook() {
-    int id, found = 0;
-    struct Book b;
-    FILE *fp = fopen("library.dat", "rb");
-    FILE *temp = fopen("temp.dat", "wb");
-
-    printf("\nEnter Book ID to Delete: ");
-    scanf("%d", &id);
-
-    while (fread(&b, sizeof(b), 1, fp)) {
-        if (b.id != id) {
-            fwrite(&b, sizeof(b), 1, temp);
-        } else {
-            found = 1;
-        }
-    }
-
-    fclose(fp);
-    fclose(temp);
-
-    remove("library.dat");
-    rename("temp.dat", "library.dat");
-
-    if (found)
-        printf("\nBook Deleted Successfully!\n");
-    else
-        printf("\nBook Not Found!\n");
-}
-
-void updateBook() {
-    int id, found = 0;
-    struct Book b;
-    FILE *fp = fopen("library.dat", "rb+");
-
-    printf("\nEnter Book ID to Update: ");
-    scanf("%d", &id);
-
-    while (fread(&b, sizeof(b), 1, fp)) {
-        if (b.id == id) {
-            printf("\nEnter New Title: ");
-            getchar();
-            fgets(b.title, 100, stdin);
-            b.title[strcspn(b.title, "\n")] = 0;
-
-            printf("Enter New Author: ");
-            fgets(b.author, 100, stdin);
-            b.author[strcspn(b.author, "\n")] = 0;
-
-            printf("Enter New Price: ");
-            scanf("%f", &b.price);
-
-            fseek(fp, -sizeof(b), SEEK_CUR);
-            fwrite(&b, sizeof(b), 1, fp);
-
-            printf("\nBook Updated Successfully!\n");
-            found = 1;
-            break;
-        }
-    }
-
-    if (!found)
-        printf("\nBook Not Found!\n");
-
-    fclose(fp);
-}
-
-int main() {
-    int choice;
-
-    while (1) {
-        printf("\n\n=== Library Management System ===\n");
-        printf("1. Add Book\n");
-        printf("2. Display Books\n");
-        printf("3. Search Book\n");
-        printf("4. Delete Book\n");
-        printf("5. Update Book\n");
-        printf("6. Exit\n");
-
-        printf("\nEnter your choice: ");
-        scanf("%d", &choice);
-
-        switch (choice) {
-            case 1: addBook(); break;
-            case 2: displayBooks(); break;
-            case 3: searchBook(); break;
-            case 4: deleteBook(); break;
-            case 5: updateBook(); break;
-            case 6: exit(0);
-            default: printf("\nInvalid Choice!\n");
-        }
-    }
-
-    return 0;
-}
+Notes & Assumptions
+• - Data stored in text/binary files.
+• - User must enter valid input.
+• - No database used.
+• - For academic purposes only.
